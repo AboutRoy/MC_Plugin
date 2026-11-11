@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Market Dashboard</title>
+<link rel="icon" href="icons/icon48.png">
+<link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+<header>
+  <div class="brand">📈 My Market Dashboard</div>
+  <div class="status"><span id="marketDot" class="dot"></span><span id="marketText"></span> · Updated <span id="lastRefresh">—</span></div>
+  <div class="actions">
+    <select id="sort">
+      <option value="manual">Sort: My order</option>
+      <option value="pctDesc">Top gainers</option>
+      <option value="pctAsc">Top losers</option>
+      <option value="name">Name A–Z</option>
+      <option value="pnl">Biggest P&amp;L</option>
+    </select>
+    <button id="researchBtn" title="Run research on all stocks now">🧠 Research now</button>
+    <button id="packBtn" title="Copy all research + Moneycontrol data to paste into Claude">📋 Copy research pack</button>
+    <button id="refreshBtn">⟳ Refresh</button>
+    <button id="settingsBtn">⚙ Settings</button>
+  </div>
+</header>
+
+<nav id="tabs">
+  <button type="button" data-tab="main" class="on">📊 Dashboard</button>
+  <button type="button" data-tab="daily">🗓 Daily summary</button>
+</nav>
+
+<div id="tabMain">
+<div id="researchStatus" class="rstatus"></div>
+<section id="indices"></section>
+<section id="summary"></section>
+
+<section id="tipsWrap">
+  <div class="tipsHead">
+    <h3>💬 WhatsApp tips</h3>
+    <span id="waStatus" class="hint"></span>
+    <span class="grow"></span>
+    <label class="hint tipsToggle"><input type="checkbox" id="tipsShowAll"> Show closed</label>
+    <button id="tipsPasteBtn" title="Paste messages or a chat export and pick out the tips">📥 Paste messages</button>
+  </div>
+  <details id="waDiagWrap"><summary class="hint">🔧 Reader diagnostics (send a screenshot of this if tips are not showing)</summary><pre id="waDiag"></pre></details>
+  <div class="tipsScroll"><table id="tipsTable"></table></div>
+  <p id="tipsEmpty" class="hint" hidden>No tips yet. Add your group names in ⚙ Settings → WhatsApp tips and keep web.whatsapp.com open in an Edge tab, or use Paste messages.</p>
+  <p class="disc tipsDisc">These are unverified tips copied from your WhatsApp groups, shown apart from the dashboard's own research signals. Stock matching and price reading can be wrong: open the original message to check. Not financial advice. Nothing is ever bought or sold.</p>
+</section>
+
+<form id="addForm">
+  <input id="addInput" placeholder="Paste a Moneycontrol stock page URL (or stock code) and press Add" autocomplete="off">
+  <button type="submit">+ Add</button>
+  <span id="addMsg"></span>
+</form>
+
+<main id="grid"></main>
+<p id="empty" class="empty" hidden>No stocks yet. Open a stock on Moneycontrol, copy the address bar URL, and paste it above.</p>
+
+<section id="logWrap">
+  <h3>Recent alerts</h3>
+  <ul id="log"></ul>
+</section>
+
+</div>
+
+<section id="tabDaily" hidden>
+  <div class="dayHead">
+    <div id="dayChips"></div>
+    <span class="grow"></span>
+    <span id="sweepStatus" class="hint"></span>
+    <button type="button" id="sweepBtn" title="Go through your watched WhatsApp groups now">⟳ Check now</button>
+  </div>
+  <div id="dayText" class="dayText"></div>
+  <div id="dayPills"></div>
+  <div id="dayGrid"></div>
+  <p class="disc tipsDisc">Built from the messages the reader picked up in your watched WhatsApp groups. A message read late is counted on the day it was read. Tips are unverified and this is not financial advice.</p>
+</section>
+
+<!-- Alert editor -->
+<dialog id="alertDlg">
+  <form method="dialog" id="alertForm">
+    <h3 id="alertTitle">Edit stock</h3>
+    <fieldset><legend>Display</legend>
+      <label>Name on dashboard <input name="displayName" placeholder="Leave blank for Moneycontrol name"></label>
+    </fieldset>
+    <fieldset><legend>My holding (optional)</legend>
+      <label>Quantity <input type="number" step="1" min="0" name="qty"></label>
+      <label>Average buy price ₹ <input type="number" step="0.01" min="0" name="buyPrice"></label>
+    </fieldset>
+    <fieldset><legend>Alerts</legend>
+    <label>Notify when price goes above ₹ <input type="number" step="0.05" name="above"></label>
+    <label>Notify when price goes below ₹ <input type="number" step="0.05" name="below"></label>
+    <label>Notify when up by % (today) <input type="number" step="0.1" name="pctUp"></label>
+    <label>Notify when down by % (today) <input type="number" step="0.1" name="pctDown"></label>
+    <p class="hint">Leave blank to turn a rule off. Each rule fires once per day.</p>
+    </fieldset>
+    <div class="row"><button value="cancel" formnovalidate>Cancel</button><button value="save" class="primary">Save</button></div>
+  </form>
+</dialog>
+
+<!-- Research detail -->
+<dialog id="researchDlg">
+  <div id="researchBody"></div>
+  <div class="row"><button type="button" id="researchOneBtn">🧠 Re-run for this stock</button><button type="button" id="researchClose" class="primary">Close</button></div>
+</dialog>
+
+<!-- Paste WhatsApp messages -->
+<dialog id="pasteDlg">
+  <h3>Paste WhatsApp messages</h3>
+  <p class="hint">Paste one or more messages, or the text of an exported chat. Only messages that look like a stock call are kept.</p>
+  <label>Group name (optional) <input id="pasteGroup" placeholder="Pasted"></label>
+  <textarea id="pasteText" rows="10" placeholder="BUY TATA MOTORS ABOVE 950 TGT 980/1000 SL 930"></textarea>
+  <div class="row"><span id="pasteMsg" class="hint" style="margin-right:auto"></span><button type="button" id="pasteClose">Close</button><button type="button" id="pasteGo" class="primary">Find tips</button></div>
+</dialog>
+
+<!-- Settings -->
+<dialog id="settingsDlg">
+  <form method="dialog" id="settingsForm">
+    <h3>Settings</h3>
+    <fieldset><legend>Refresh</legend>
+      <label>Every <input type="number" min="1" name="interval" style="width:60px"> minute(s)</label>
+      <label class="check"><input type="checkbox" name="marketHoursOnly"> Only during market hours (9:15–3:30 IST, Mon–Fri)</label>
+    </fieldset>
+    <fieldset><legend>Desktop</legend>
+      <label class="check"><input type="checkbox" name="desktop"> Windows / Edge pop-up notifications</label>
+    </fieldset>
+    <fieldset><legend>🧠 Research &amp; recommendations</legend>
+      <label class="check"><input type="checkbox" name="ai_on"> Morning brief + instant research flags</label>
+      <label>Engine <select name="ai_engine">
+        <option value="rules">Free – built-in analysis (no cost)</option>
+        <option value="claude">Claude API (paid, deeper + web cross-check)</option>
+      </select></label>
+      <label>Morning brief time (IST) <input name="ai_briefTime" type="time"></label>
+      <label>Re-check if a stock moves ± % <input name="ai_flagPct" type="number" step="0.5" min="1" style="width:80px"></label>
+      <p class="hint">Free engine: MC Score, analyst target, news and 1-year price trend (50/200-day averages, RSI, 52-week levels), with the reasons behind every signal. Brief goes to Telegram and the dashboard.</p>
+      <details><summary class="hint" style="cursor:pointer">Claude API options (only if Engine = Claude API)</summary>
+        <label>Claude API key <input name="ai_key" type="password" placeholder="sk-ant-..."></label>
+        <label>Model <input name="ai_model" placeholder="claude-sonnet-5-5"></label>
+        <label class="check"><input type="checkbox" name="ai_webValidate"> Cross-check with web search</label>
+      </details>
+    </fieldset>
+    <fieldset><legend>💬 WhatsApp tips</legend>
+      <label class="check"><input type="checkbox" name="tips_on"> Read stock tips from my WhatsApp groups</label>
+      <label class="col">Group names to watch, one per line (as shown in WhatsApp)
+        <textarea name="tips_groups" rows="3" placeholder="Stock Market Friends&#10;Swing Trading Club"></textarea></label>
+      <label class="check"><input type="checkbox" name="tips_autoOpen"> Open a watched group when it has new messages (marks them as read)</label>
+      <label class="check"><input type="checkbox" name="tips_notify"> Alert me on a new tip, and when its target or stop-loss is reached</label>
+      <label class="check"><input type="checkbox" name="tips_digest"> Send me the day's summary after market close (3:45 pm IST)</label>
+      <label>If a tip gives no target, use + % <input name="tips_defTargetPct" type="number" step="0.5" min="0" style="width:80px" placeholder="off"></label>
+      <label>If a tip gives no stop-loss, use − % <input name="tips_defStopPct" type="number" step="0.5" min="0" style="width:80px" placeholder="off"></label>
+      <p class="hint">Keep <b>web.whatsapp.com</b> open in an Edge tab (WhatsApp set to English). Pin your tip groups in WhatsApp so they stay at the top of the chat list. The reader only reads; it never sends anything. Alerts use the channels set up below.</p>
+    </fieldset>
+    <fieldset><legend>Telegram (free, recommended)</legend>
+      <label class="check"><input type="checkbox" name="tg_on"> Send alerts to Telegram</label>
+      <label>Bot token <input name="tg_token" placeholder="123456789:AA..."></label>
+      <label>Chat ID <input name="tg_chatId" placeholder="Click Detect"></label>
+      <div class="row" style="justify-content:flex-start;margin-top:4px"><button type="button" id="tgDetectBtn">Detect my chat ID</button><span id="tgMsg" class="hint"></span></div>
+      <p class="hint">Setup: in Telegram search <b>@BotFather</b> → send <b>/newbot</b> → pick any name and a username ending in “bot” → copy the token it gives you into Bot token. Then open your new bot, tap <b>Start</b>, come back here and click <b>Detect my chat ID</b>.</p>
+    </fieldset>
+    <fieldset><legend>WhatsApp (free, via CallMeBot — can be unreliable)</legend>
+      <label class="check"><input type="checkbox" name="wa_on"> Send alerts to WhatsApp</label>
+      <label>Your number with country code <input name="wa_phone" placeholder="+9198XXXXXXXX"></label>
+      <label>CallMeBot API key <input name="wa_apikey"></label>
+      <p class="hint">Setup: save +34 644 66 32 62 in contacts, send it “I allow callmebot to send me messages” on WhatsApp, and it replies with your API key.</p>
+    </fieldset>
+    <fieldset><legend>Email (free, via EmailJS)</legend>
+      <label class="check"><input type="checkbox" name="em_on"> Send alerts by email</label>
+      <label>Service ID <input name="em_serviceId"></label>
+      <label>Template ID <input name="em_templateId"></label>
+      <label>Public key <input name="em_publicKey"></label>
+      <label>Private key <input name="em_privateKey" type="password"></label>
+      <label>Send to <input name="em_to" type="email"></label>
+      <p class="hint">Create a free account at emailjs.com, connect Gmail as a service, make a template using {{subject}}, {{message}} and {{to_email}}, and turn on “Allow EmailJS API for non-browser applications” under Account → Security.</p>
+    </fieldset>
+    <div class="row"><button type="button" id="testBtn">Send test alert</button><span id="testMsg"></span></div>
+    <div class="row"><button value="cancel" formnovalidate>Cancel</button><button value="save" class="primary">Save</button></div>
+  </form>
+</dialog>
+
+<script src="tips-summary.js"></script>
+<script src="dashboard.js"></script>
+<script src="tips-ui.js"></script>
+<script src="summary-ui.js"></script>
+</body>
+</html>

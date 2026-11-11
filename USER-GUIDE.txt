@@ -1,0 +1,112 @@
+MY MONEYCONTROL DASHBOARD — Edge extension (v2.5)
+===========================================
+
+INSTALL (2 minutes)
+1. Unzip this folder somewhere permanent (e.g. Documents\mc-dashboard).
+2. In Edge, go to  edge://extensions
+3. Turn ON "Developer mode" (left side).
+4. Click "Load unpacked" and pick the mc-dashboard folder.
+5. Pin the extension (puzzle icon → eye icon). Click it to open your dashboard.
+
+ADD YOUR STOCKS
+- Open each stock's page on Moneycontrol, copy the URL from the address bar,
+  paste it into the dashboard box and click Add.
+- Once all are added you can close those Moneycontrol tabs.
+- Drag cards to reorder. Use the sort menu for top gainers / losers.
+
+ALERTS
+- Click the bell on any card: price above / below, or % up / down today.
+- Each rule fires once per day. The badge on the icon shows "stocks up / total".
+- Settings (⚙): choose desktop, WhatsApp and/or email. Use "Send test alert".
+
+  TELEGRAM (recommended): Settings has step-by-step instructions + a "Detect my chat ID" button.
+
+  WhatsApp (free, can be unreliable): save +34 644 66 32 62, send it on WhatsApp:
+     I allow callmebot to send me messages
+  It replies with an API key. Enter your number (+91...) and the key in Settings.
+
+  Email (free): emailjs.com → add Gmail service → create template with
+     Subject: {{subject}}   Body: {{message}}   To: {{to_email}}
+  Account → Security: allow API for non-browser applications.
+  Enter Service ID, Template ID, Public key, Private key in Settings.
+
+NOTES
+- Data is fetched using your logged-in Moneycontrol session in Edge.
+- Edge must be running for refresh and alerts to work (it can be minimised).
+  To keep Edge running in the background: edge://settings/system →
+  "Continue running background extensions and apps when Microsoft Edge is closed".
+- If a stock shows "No data", remove it and paste its full Moneycontrol URL again.
+
+RESEARCH & RECOMMENDATIONS (v2.1) — FREE, no API needed
+- Settings → "Research & recommendations": tick "Morning brief + instant research flags",
+  keep Engine = Free. Save. Then click "🧠 Research now" once.
+- Each card gets a signal badge (🟢 Consider adding / ⚪ Hold / 🟡 Watch closely /
+  🟠 Consider trimming / 🔴 Avoid). Click it for the key points, risks and sources.
+- How it decides: MC Score, analyst target & consensus, news tone, and 1-year price trend
+  (50/200-day averages, RSI, 52-week levels, volume), plus your holding P&L.
+- Morning brief on weekdays (default 9:00 IST) to Telegram. During market hours it re-checks
+  every 30 min and alerts you when a signal changes or something important happens
+  (new 52-week high/low, crossing the 200-day average, MC Score change, new results/news).
+- 📋 Copy research pack: copies everything to paste into your Claude chat for a deeper,
+  web-verified review at no extra cost.
+- Optional: Engine = Claude API for automatic AI analysis (paid, needs an API key).
+- These are research signals, not financial advice. Nothing is ever bought or sold.
+
+WHATSAPP TIPS (v2.2)
+- What it does: reads the WhatsApp groups you name, keeps messages that look like a stock call
+  (buy / sell, entry, target, stop-loss), shows them in the "WhatsApp tips" table on the dashboard,
+  and alerts you on a new tip and again when its target or stop-loss is reached.
+- Update: edge://extensions → click the reload (↻) arrow on "My Moneycontrol Dashboard".
+  Edge may ask you to accept the new permission for web.whatsapp.com. Then reload the WhatsApp Web tab.
+- Set up: ⚙ Settings → "WhatsApp tips" → type your group names, one per line, exactly as WhatsApp shows them. Save.
+- Keep web.whatsapp.com open in an Edge tab (it can be in the background). Use WhatsApp Web in English.
+  Pin your tip groups in WhatsApp so they stay at the top of the chat list.
+  So Edge doesn't put the tab to sleep: edge://settings/system → "Never put these sites to sleep" → add web.whatsapp.com
+- The status line next to "WhatsApp tips" shows whether the reader is working.
+- "When to sell" shows the target and stop-loss from the message itself. If a message gives none, the tip is
+  flagged, unless you set a default + % / − % rule in Settings.
+- "＋ Add" puts the stock on your dashboard with the tip's target and stop-loss as price alerts.
+- "📥 Paste messages": paste messages or an exported chat to pick out tips by hand (works without WhatsApp Web).
+- Limits: it only reads text (not chart images or voice notes); a watched group is marked as read when the reader
+  opens it; nothing is captured while Edge or the laptop is off, but unread messages are picked up next time;
+  options / futures and index calls are listed but not price-tracked; WhatsApp can change its page and break the
+  reader, in which case the status line will show it is not reading.
+- The reader never sends, deletes or changes anything in WhatsApp. Tips are unverified and are not financial advice.
+
+DAILY SUMMARY TAB (v2.3)
+- Update: edge://extensions → reload (↻) "My Moneycontrol Dashboard", then reload the WhatsApp Web tab once.
+- A second tab, "🗓 Daily summary", sits beside "📊 Dashboard". For each of the last 7 days it shows: a short written
+  summary, messages read, new stock calls, sell signals from earlier tips (target reached, stop-loss hit, exit called),
+  the most talked-about stocks, other messages that mention a stock on your dashboard, activity by group, and a
+  track record of each person's buy calls so far.
+- Every 15 minutes the reader goes through each watched group in the WhatsApp Web tab, so nothing waits for you to
+  open a chat. The tab shows when the groups were last checked; "⟳ Check now" does it at once.
+  This needs "Open a watched group when it has new messages" to stay ticked in Settings, and it waits while you are
+  using the WhatsApp tab yourself.
+- After market close (3:45 pm IST, weekdays) the day's summary is sent to your alert channels. Untick
+  "Send me the day's summary" in Settings to stop it.
+- The summary is built from fixed rules, not AI. A message read late is counted on the day it was read.
+
+STOCK DISCUSSIONS (v2.4)
+- Update: edge://extensions → reload (↻) "My Moneycontrol Dashboard". The WhatsApp tab restarts its reader by itself.
+- Every message that names a stock is now filed under that stock, even when it is not a buy/sell call
+  ("I am also stuck with Laurus"). The Daily summary tab shows one card per stock with a short summary:
+  how many messages and people, the tone (positive / negative / mixed), what it was about (results, price levels,
+  buying, selling, being stuck, news...), numbers mentioned, and the messages themselves.
+- How a stock is recognised: stocks on your dashboard or in earlier tips; Nifty / Bank Nifty / Sensex; and words written
+  like a name (Capitalised or ALL CAPS) or in a built-in list of popular names, checked once against Moneycontrol's search.
+- It will sometimes miss a stock (unusual nickname, all small letters) or pick up a word that is not a stock.
+  Click "✕ Not a stock" on a card to remove it for good.
+- The summaries use fixed rules (word counts), not AI, so read the tone as a rough guide. If a Claude API key is saved
+  in Settings, each card also gets a "✨ AI summary" button: it sends that stock's messages to Claude and uses your API credit.
+- Buy/sell calls are now stricter: remarks and questions ("bought some at 310", "should I buy at 410?") are treated as
+  discussion, not as a call.
+
+TWO BOARDS: INVESTED AND WATCHLIST (v2.5)
+- Update: edge://extensions → reload (↻) "My Moneycontrol Dashboard".
+- The Dashboard tab now has two boards: "💼 Invested" and "👀 Watchlist".
+- To start with, a stock that has a quantity (bell icon → My holding) is on Invested and the rest are on Watchlist.
+- Drag a card onto the other board to move it. It stays where you put it.
+- With "Sort: My order", drop a card on another card to place it beside that card (a blue edge shows which side).
+  With any other sort, dragging only moves the card between boards.
+- New stocks you add go to the Watchlist.
