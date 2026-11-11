@@ -1,5 +1,7 @@
 # My Moneycontrol Dashboard
 
+![My Moneycontrol Dashboard: daily summary of stocks discussed in WhatsApp groups](docs/cover.png)
+
 A personal Microsoft Edge extension that puts all your Moneycontrol stocks on one dashboard, sends price alerts, and picks up stock tips and stock discussions from your own WhatsApp groups.
 
 It runs entirely in your browser. There is no server, and your stocks, holdings, keys and messages stay in Edge's local storage on your computer.
